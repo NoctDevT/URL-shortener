@@ -13,6 +13,6 @@ COPY . .
 
 RUN rm -rf /app/db /app/database
 
-RUN cargo build --release
+RUN cargo build --release --features dotenv
 
-CMD ["./target/release/rest-api"]
+CMD ["./target/release/url-shortener"]

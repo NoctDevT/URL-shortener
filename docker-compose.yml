@@ -2,7 +2,7 @@ version: '3.8'
 services:
   database:
     image: postgres:16
-    container_name: postgres_db
+    container_name:  url-shortener-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -12,17 +12,24 @@ services:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
   backend:
     build: 
       context: ./
       dockerfile: rust.dockerfile
     container_name: url_shortener
     depends_on:
-      - database
+       database:
+          condition: service_healthy
     ports:
       - "8080:8080"
     environment:
-      DATABASE_URL: postgres://postgres:password@database:5432/postgres
+      DATABASE_URL: postgres://postgres:password@url-shortener-db:5432/postgres
+      RUST_LOG: info
     restart: always
     working_dir: /app
 

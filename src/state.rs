@@ -1,3 +1,6 @@
+
+//basically a pool
+
 #[derive(Clone)]
 pub struct State {
     database: deadpool_postgres::Pool,

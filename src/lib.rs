@@ -4,3 +4,5 @@
 pub mod api;
 pub mod database;
 pub mod state;
+pub mod models;
+pub mod routes;
