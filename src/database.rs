@@ -20,7 +20,8 @@ where
     C: GenericClient,
 {
     const SQL: &str = "DELETE FROM link WHERE id = $1";
-    const TYPES: &[Type] = &[Type::TEXT, Type::TEXT];
+    // this is causing errors where having more than one type where we only expect one paramater is the issue 
+    const TYPES: &[Type] = &[Type::TEXT];
 
     let stmt = client.prepare_typed(SQL, TYPES).await?;
     client.execute(&stmt, &[&id]).await?;
